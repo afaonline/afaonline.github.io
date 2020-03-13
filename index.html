@@ -15,7 +15,11 @@
     <div class="list-group" id="app">
       <div class="list-group-item">
         <div class="row" v-for="date in dates">
-          <div class="col-sm display-4">{{ date.name }}</div>
+          <div class="col-sm">
+            <div class="display-4">{{ date.name }}</div> 
+            <small>{{ date.originalDate}}</small>
+          </div>
+
           <div class="col-sm display-2">{{ date.left }}</div>
         </div>        
       </div>
@@ -38,6 +42,7 @@
           ];
               
       dates.forEach(d => {
+        d.originalDate = moment(d.date).format('DD.MM.YYYY');
         const leftDays = moment(d.date).diff(moment(),'days');
         console.log(`${leftDays} days`);
         var left = '';
