@@ -11,13 +11,61 @@
     <title>Осталось дней</title>
   </head>
   <body>
-    <h1>Осталось дней</h1>
 
-    <!-- Optional JavaScript -->
+    <div class="list-group" id="app">
+      <div class="list-group-item">
+        <div class="row" v-for="date in dates">
+          <div class="col-sm display-4">{{ date.name }}</div>
+          <div class="col-sm display-2">{{ date.left }}</div>
+        </div>        
+      </div>
+    </div>
 
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->    
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.24.0/moment.min.js"></script>
+
+    <script>
+      const dates = [
+            { name: 'Романов лес', date: "2020-04-24" },            
+            { name: 'День рождения Тёмы', date: "2020-07-15" },            
+            { name: 'День рождения Киры', date: "2021-01-27" },
+            { name: 'Лето', date: "2020-06-01" },
+          ];
+              
+      dates.forEach(d => {
+        const leftDays = moment(d.date).diff(moment(),'days');
+        console.log(`${leftDays} days`);
+        var left = '';
+        if (leftDays < 0) left = 'В прошлом'
+          else
+          if (leftDays == 0) left = 'Сегодня!'
+          else {
+            const m100 = leftDays % 100;
+            var flexion = 'дней'            
+            if (m100 < 10 || m100 > 20) {
+              const m10 = m100 % 10;
+              if (m10 == 1) flexion = 'день'
+                else if (m10 > 1 && m10 < 5) flexion = 'дня'
+            }
+            left = leftDays.toString() + ' ' + flexion;
+          }
+        d.leftDays = leftDays;  
+        d.left = left;
+      });  
+
+      dates.sort((a,b) => a.leftDays - b.leftDays );
+      
+      var app = new Vue({
+        el: '#app',
+        data: {
+          dates : dates
+        }
+      })
+    </script>
   </body>
 </html>
