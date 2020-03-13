@@ -34,43 +34,52 @@
     <script src="https://cdn.jsdelivr.net/npm/moment@2.24.0/moment.min.js"></script>
 
     <script>
+      function recalcDates (datesArray) {
+
+        datesArray.forEach(d => {
+          d.originalDate = moment(d.date).format('DD.MM.YYYY');
+          const leftDays = moment(d.date).diff(moment(),'days');
+          console.log(`${leftDays} days`);
+          var left = '';
+          if (leftDays < 0) left = 'В прошлом'
+            else
+            if (leftDays == 0) left = 'Сегодня!'
+            else {
+              const m100 = leftDays % 100;
+              var flexion = 'дней'            
+              if (m100 < 10 || m100 > 20) {
+                const m10 = m100 % 10;
+                if (m10 == 1) flexion = 'день'
+                  else if (m10 > 1 && m10 < 5) flexion = 'дня'
+              }
+              left = leftDays.toString() + ' ' + flexion;
+            }
+          d.leftDays = leftDays;  
+          d.left = left;
+        });  
+
+        datesArray.sort((a,b) => a.leftDays - b.leftDays );
+      }
       const dates = [
             { name: 'Романов лес', date: "2020-04-24" },            
             { name: 'День рождения Тёмы', date: "2020-07-15" },            
             { name: 'День рождения Киры', date: "2021-01-27" },
             { name: 'Лето', date: "2020-06-01" },
           ];
-              
-      dates.forEach(d => {
-        d.originalDate = moment(d.date).format('DD.MM.YYYY');
-        const leftDays = moment(d.date).diff(moment(),'days');
-        console.log(`${leftDays} days`);
-        var left = '';
-        if (leftDays < 0) left = 'В прошлом'
-          else
-          if (leftDays == 0) left = 'Сегодня!'
-          else {
-            const m100 = leftDays % 100;
-            var flexion = 'дней'            
-            if (m100 < 10 || m100 > 20) {
-              const m10 = m100 % 10;
-              if (m10 == 1) flexion = 'день'
-                else if (m10 > 1 && m10 < 5) flexion = 'дня'
-            }
-            left = leftDays.toString() + ' ' + flexion;
-          }
-        d.leftDays = leftDays;  
-        d.left = left;
-      });  
 
-      dates.sort((a,b) => a.leftDays - b.leftDays );
+      recalcDates(dates);
       
       var app = new Vue({
         el: '#app',
         data: {
           dates : dates
         }
-      })
+      });
+
+      window.setInterval (() => {
+        const m = moment();
+        if (m.hour() == 0 && m.minute() == 0) recalcDates(dates);
+      }, 60000);
     </script>
   </body>
 </html>
