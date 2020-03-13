@@ -60,21 +60,31 @@
 
         datesArray.sort((a,b) => a.leftDays - b.leftDays );
       }
-      const dates = [
-            { name: 'Романов лес', date: "2020-04-24" },            
-            { name: 'День рождения Тёмы', date: "2020-07-15" },            
-            { name: 'День рождения Киры', date: "2021-01-27" },
-            { name: 'Лето', date: "2020-06-01" },
-          ];
 
-      recalcDates(dates);
+
+      //const dates = [
+      //      { name: 'Романов лес', date: "2020-04-24" },            
+      //      { name: 'День рождения Тёмы', date: "2020-07-15" },            
+      //      { name: 'День рождения Киры', date: "2021-01-27" },
+      //      { name: 'Лето', date: "2020-06-01" },
+      //    ];
+      var dates = null;
+
+      fetch ('https://dates-artyom.herokuapp.com/db', { method: 'GET'})
+        .then (res => res.text())
+        .then (text => {
+          dates = JSON.parse(text);
+          recalcDates(dates);
       
-      var app = new Vue({
-        el: '#app',
-        data: {
-          dates : dates
-        }
-      });
+          var app = new Vue({
+            el: '#app',
+            data: {
+              dates : dates
+            }
+          });
+
+        })
+
 
       window.setInterval (() => {
         const m = moment();
