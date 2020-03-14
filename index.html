@@ -12,6 +12,7 @@
   </head>
   <body>
 
+    <div class="container">
     <div class="spinner-border" role="status" id="spinner">
     </div>
     <div class="list-group" id="app" hidden>
@@ -21,11 +22,10 @@
             <div class="display-4">{{ date.name }}</div> 
             <small>{{ date.originalDate}}</small>
           </div>
-
-          <div class="col-sm display-2">{{ date.left }}</div>
-          <div class="col-sm" role="delete_col" hidden>
+          <div class="col-sm-auto" role="delete_col" hidden>
             <button type="button" class="btn btn-outline-danger" role="delete-button" :date-id="date.id" :date-index="index">-</button>      
           </div>
+          <div class="col-sm display-2">{{ date.left }}</div>
         </div>        
       </div>
     </div>
@@ -33,6 +33,7 @@
       <button type="button" class="btn btn-outline-primary" id="add_date" data-toggle="modal" data-target="#addDateModal">+</button>    
       <button type="button" class="btn btn-outline-danger" id="del_date">-</button>
     </div>
+  </div>
 
 
     <!-- Modal -->
@@ -153,12 +154,17 @@
       });
 
       $("#del_date").click(async e => {
-        $("button[role='delete-button']").click(async e => {
-          await deleteDate (e.target.getAttribute('date-id'));
-          dates.splice(e.target.getAttribute('date-index'),1);
-          $("div[role='delete_col']").prop("hidden",true);
-        });
-        $("div[role='delete_col']").prop("hidden",false);
+        if (!$("div[role='delete_col']").prop("hidden")) {
+          $("div[role='delete_col']").prop("hidden",true);  
+        }
+        else {
+          $("button[role='delete-button']").click(async e => {
+            await deleteDate (e.target.getAttribute('date-id'));
+            dates.splice(e.target.getAttribute('date-index'),1);
+            $("div[role='delete_col']").prop("hidden",true);
+          });
+          $("div[role='delete_col']").prop("hidden",false);
+        }
       });
 
       window.setInterval (() => {
