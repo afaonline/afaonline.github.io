@@ -79,7 +79,8 @@
 
         datesArray.forEach(d => {
           d.originalDate = moment(d.date).format('DD.MM.YYYY');
-          const leftDays = moment(d.date).diff(moment(),'days');
+          const leftMinutes = moment(d.date).diff(moment(),'minutes');        
+          const leftDays = Math.floor((leftMinutes + 1440) / 1440);
           var left = '';
           if (leftDays < 0) left = 'В прошлом'
             else
