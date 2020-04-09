@@ -162,8 +162,8 @@
 
       function fillDates() {
         loadDates (token).then (d => {        
-          if (d === 403) {
-            console.log (`GOT STATUS ${d}`);
+          console.log (`GOT STATUS ${d}`);
+          if (d === 403) {            
             $("#tokenModal").modal('show');
             return;
           }
