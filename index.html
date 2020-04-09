@@ -151,7 +151,7 @@
       $("#save_new_token").click(async e => {
           token = $("#new_token").val();
           console.log (`Token entered: ${token}`);
-          Cookies.set('token', token);
+          Cookies.set('token', token, { expires: 14 });
           $("#tokenModal").modal('hide');
           fillDates();
         });
