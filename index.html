@@ -147,22 +147,23 @@
       var dates = null;
       var app = null;
       var token = Cookies.get('token');
-      if (!token) {
-        console.log('We have no token!');
-        $("#save_new_token").click(async e => {
+      
+      $("#save_new_token").click(async e => {
           token = $("#new_token").val();
           console.log (`Token entered: ${token}`);
           Cookies.set('token', token);
           $("#tokenModal").modal('hide');
           fillDates();
         });
+
+      if (!token) {
+        console.log('We have no token!');
         $("#tokenModal").modal('show');
       }
       else fillDates();
 
       function fillDates() {
         loadDates (token).then (d => {        
-          console.log (`GOT STATUS ${d}`);
           if (d === 403) {            
             $("#tokenModal").modal('show');
             return;
