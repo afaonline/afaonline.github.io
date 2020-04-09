@@ -132,7 +132,8 @@
       }
 
       async function loadDates(token) {
-        const response = await fetch ('https://dates-artyom.herokuapp.com/db', { method: 'GET', mode: 'cors', headers: {authorization : token}});
+        console.log (`loadDates called with token:${token}`);
+        const response = await fetch ('https://dates-artyom.herokuapp.com/db', { method: 'GET', mode: 'cors', headers: {authorization : token }});
         return await response.json();
       }
 
@@ -145,13 +146,15 @@
       var app = null;
       var token = Cookies.get('token');
       if (!token) {
+        console.log('We have no token!');
         $("#save_new_token").click(async e => {
-          token = $("new_token").val();
+          token = $("#new_token").val();
+          console.log (`Token entered: ${token}`);
           Cookies.set('token', token);
-          $("#tokenModal").modal('toggle');
+          $("#tokenModal").modal('hide');
           fillDates();
         });
-        $("#tokenModal").modal('toggle');
+        $("#tokenModal").modal('show');
       }
       else fillDates();
 
