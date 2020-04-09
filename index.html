@@ -133,8 +133,10 @@
 
       async function loadDates(token) {
         console.log (`loadDates called with token:${token}`);
-        const response = await fetch ('https://dates-artyom.herokuapp.com/db', { method: 'GET', mode: 'cors', headers: {authorization : token }});
-        return await response.json();
+        const response = await fetch ('https://dates-artyom.herokuapp.com/db', { method: 'GET', mode: 'no-cors', headers: {authorization : token }});
+        if (response.ok)
+          return await response.json();
+        else return response.status;
       }
 
       async function deleteDate(dateId, token) {
@@ -159,7 +161,12 @@
       else fillDates();
 
       function fillDates() {
-        loadDates (token).then (d => {
+        loadDates (token).then (d => {        
+          if (d === 403) {
+            console.log (`GOT STATUS ${d}`);
+            $("#tokenModal").modal('show');
+            return;
+          }
           dates = d;        
           recalcDates(dates);
         
