@@ -133,7 +133,7 @@
 
       async function loadDates(token) {
         console.log (`loadDates called with token:${token}`);
-        const response = await fetch ('https://dates-artyom.herokuapp.com/db', { method: 'GET', mode: 'no-cors', headers: {authorization : token }});
+        const response = await fetch ('https://dates-artyom.herokuapp.com/db', { method: 'GET', mode: 'cors', headers: {authorization : token }});
         if (response.ok)
           return await response.json();
         else return response.status;
