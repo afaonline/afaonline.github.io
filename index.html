@@ -201,7 +201,7 @@
         });
         $("#addDateModal").modal('hide');
         if (res.ok) {
-          const d = await loadDates();
+          const d = await loadDates(token);
           recalcDates(d);
           dates.length = 0;
           d.forEach (i => dates.push(i));
