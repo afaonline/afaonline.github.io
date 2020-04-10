@@ -190,19 +190,23 @@
           date : $("#new_date").val()
         }
         console.log(JSON.stringify(data));
-        await fetch('https://dates-artyom.herokuapp.com/db', {
+        const res = await fetch('https://dates-artyom.herokuapp.com/db', {
            method: 'POST',
            mode: 'cors',
            headers: {
+            authorization : token,
             'Content-Type': 'application/json'
            },
            body: JSON.stringify(data)
         });
-        $("#addDateModal").modal('toggle');
-        const d = await loadDates();
-        recalcDates(d);
-        dates.length = 0;
-        d.forEach (i => dates.push(i));
+        $("#addDateModal").modal('hide');
+        if (res.ok) {
+          const d = await loadDates();
+          recalcDates(d);
+          dates.length = 0;
+          d.forEach (i => dates.push(i));
+        }
+        else $("#tokenModal").modal('show');
       });
 
       $("#del_date").click(async e => {
